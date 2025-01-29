@@ -1,0 +1,10 @@
+{
+    "buildCommand": "next build",
+    "installCommand": "npm install",
+    "framework": "nextjs",
+    "outputDirectory": ".next",
+    "regions": ["lhr1"],
+    "env": {
+      "NEXT_PUBLIC_API_URL": "https://testaiapp-backend.onrender.com"
+    }
+  }

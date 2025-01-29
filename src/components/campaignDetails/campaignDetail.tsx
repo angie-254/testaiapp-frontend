@@ -1,26 +1,67 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Calendar, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Calendar, Link as LinkIcon, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useParams, useRouter } from 'next/navigation';
+import { useCampaign, useSubmitContent } from '@/lib/hooks/campaigns';
 
 
 const CampaignDetail = () => {
+  const router = useRouter();
+  const params = useParams();
+  const campaignId = Number(params.id);
   const [contentUrl, setContentUrl] = useState('');
-  const [submitStatus, setSubmitStatus] = useState('');
+  const { 
+    data: campaignData, 
+    isLoading, 
+    error 
+  } = useCampaign(campaignId);
+  
+  const { 
+    mutate: submitContent, 
+    isPending: isSubmitting,
+    isSuccess: isSubmitSuccess,
+    error: submitError 
+  } = useSubmitContent();
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitStatus('success');
-    setContentUrl('');
+    submitContent({ 
+      campaignId, 
+      contentUrl 
+    }, {
+      onSuccess: () => {
+        setContentUrl('');
+      }
+    });
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error || !campaignData) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <Alert className="bg-red-50">
+          <AlertDescription>
+            Error loading campaign details. Please try again later.
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {/* Header Section */}
       <div className="mb-6">
         <button 
-          onClick={() => window.location.href = '/dashboard/campaignLists'}
+          onClick={() => router.push('/dashboard/campaignLists')}
           className="flex items-center text-gray-600 hover:text-gray-800 mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -36,7 +77,6 @@ const CampaignDetail = () => {
         </div>
       </div>
 
-      {/* Campaign Details Card */}
       <Card className="mb-6">
         <CardHeader>
           <h2 className="text-xl font-semibold">Campaign Details</h2>
@@ -63,16 +103,23 @@ const CampaignDetail = () => {
         </CardContent>
       </Card>
 
-      {/* Submission Form */}
       <Card className="mb-6">
         <CardHeader>
           <h2 className="text-xl font-semibold">Submit Content</h2>
         </CardHeader>
         <CardContent>
-          {submitStatus === 'success' && (
+          {isSubmitSuccess && (
             <Alert className="mb-4 bg-green-50">
               <AlertDescription>
                 Your submission has been received successfully!
+              </AlertDescription>
+            </Alert>
+          )}
+
+{submitError && (
+            <Alert className="mb-4 bg-red-50">
+              <AlertDescription>
+                Error submitting content. Please try again.
               </AlertDescription>
             </Alert>
           )}
@@ -96,21 +143,28 @@ const CampaignDetail = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+              disabled={isSubmitting}
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
             >
-              Submit Content
+               {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Submitting...
+                </span>
+              ) : (
+                'Submit Content'
+              )}
             </button>
           </form>
         </CardContent>
       </Card>
 
-      {/* Previous Submissions */}
       <Card>
         <CardHeader>
           <h2 className="text-xl font-semibold">Previous Submissions</h2>
         </CardHeader>
         <CardContent>
-          {campaignData.submissions.length > 0 ? (
+          {campaignData.submissions?.length > 0 ? (
             <div className="space-y-4">
               {campaignData.submissions.map((submission) => (
                 <div

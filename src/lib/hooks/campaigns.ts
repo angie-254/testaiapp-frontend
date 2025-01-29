@@ -28,13 +28,21 @@ export const useCampaigns = () => {
 };
 
 export const useCampaign = (id: number) => {
-  return useQuery({
+  return useQuery<Campaign & { submissions: Submission[] }, Error>({
     queryKey: ['campaigns', id],
     queryFn: async () => {
-      const { data } = await api.get<Campaign & { submissions: Submission[] }>(`/campaigns/${id}`);
-      return data;
+      try {
+        const { data } = await api.get<Campaign & { submissions: Submission[] }>(
+          `/campaigns/${id}`
+        );
+        return data;
+      } catch (error) {
+        console.error('Error fetching campaign:', error);
+        throw error;
+      }
     },
     enabled: !!id,
+    retry: 1
   });
 };
 

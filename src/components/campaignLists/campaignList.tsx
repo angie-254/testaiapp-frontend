@@ -4,6 +4,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, ArrowRight, Loader2 } from 'lucide-react';
 import { Campaign, useCampaigns } from '@/lib/hooks/campaigns';
+import Link from 'next/link';
 
 const CampaignCard = ({ campaign } : { campaign: Campaign }) => (
   <Card className="mb-4 hover:shadow-lg transition-shadow">
@@ -26,13 +27,13 @@ const CampaignCard = ({ campaign } : { campaign: Campaign }) => (
     <CardContent>
       <p className="text-gray-600 mb-4">{campaign.description}</p>
       <div className="flex justify-end">
-        <button 
-          onClick={() => window.location.href = `/campaigns/${campaign.id}`}
+      <Link 
+          href={`/dashboard/campaignDetails/${campaign.id}`}
           className="flex items-center text-blue-600 hover:text-blue-800"
         >
           View Details
           <ArrowRight className="w-4 h-4 ml-2" />
-        </button>
+        </Link>
       </div>
     </CardContent>
   </Card>
