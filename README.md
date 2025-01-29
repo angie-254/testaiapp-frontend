@@ -6,6 +6,8 @@
 
 **Live Application**: [https://testaiapp-frontend.vercel.app](https://testaiapp-frontend.vercel.app)
 
+> **⚠️ Important**: The backend is hosted on a free tier service that goes to sleep after inactivity. When you first access the application, **please wait for about 2 minutes** while the backend server "wakes up". After this initial wait, the application will function normally and respond quickly to all requests.
+
 > **Note**: The application is fully functional for the requested features. You can explore the campaigns and test the submission functionality right away!
 
 ## Features
