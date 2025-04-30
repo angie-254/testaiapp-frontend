@@ -1,6 +1,6 @@
 # Campaign Tracker Frontend
 
-> **Project Context**: This is a demonstration application developed as part of a technical interview assessment, completed within a 24-hour timeframe. While it implements the core functionalities specified in the interview requirements, it is not intended to represent a full production application. The focus was on demonstrating technical capabilities, code quality, and implementation of specific features as per the interview instructions.
+> **Project Context**: This is a demonstration application developed as part of a technical interview assessment, completed within a 24-hour timeframe.While it implements the core functionalities specified in the interview requirements, it is not intended to represent a full production application. The focus was on demonstrating technical capabilities, code quality, and implementation of specific features as per the interview instructions.
 
 ## Live Demo
 
