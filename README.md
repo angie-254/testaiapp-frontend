@@ -18,7 +18,7 @@
 - Responsive Design: Mobile-friendly user interface
 - Real-time Status Updates: Instant feedback on submission status
 
-## Tech Stack
+## TechStack
 
 - Next.js 13+ (App Router)
 - TypeScript
